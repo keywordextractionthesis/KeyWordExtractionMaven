@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keywordextraction;
+package org.csulb.edu.raghu.keyword.keywordextraction;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

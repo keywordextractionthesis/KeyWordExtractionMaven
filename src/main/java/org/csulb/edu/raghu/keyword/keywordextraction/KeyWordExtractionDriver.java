@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keywordextraction;
+package org.csulb.edu.raghu.keyword.keywordextraction;
 
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.util.Tool;
