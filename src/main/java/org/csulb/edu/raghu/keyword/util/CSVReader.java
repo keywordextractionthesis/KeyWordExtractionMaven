@@ -1,4 +1,4 @@
-package com.csulb.edu.raghu.keyword.util;
+package org.csulb.edu.raghu.keyword.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
