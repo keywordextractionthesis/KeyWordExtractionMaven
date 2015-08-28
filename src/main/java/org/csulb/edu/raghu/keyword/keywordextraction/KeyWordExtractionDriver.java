@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
-import org.csulb.edu.regex.RegexFileInputFormat;
+import org.csulb.edu.raghu.regex.RegexFileInputFormat;
 
 public class KeyWordExtractionDriver extends Configured implements Tool {
 
