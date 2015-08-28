@@ -1,6 +1,7 @@
-package org.csulb.edu.raghu.keyword.util;
+package com.csulb.edu.raghu.keyword;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,10 +20,12 @@ public class Posting {
 	private Map<String,Integer> tokens;
 	
 	private static Set<String> stopWords = generateStopWords();
-	
+	private static URI[] stopWordFiles;
 	
 	//Parameterized Constructor
-	public Posting(String record){
+	public Posting(String record, URI[] stopWordFiles){
+		this.stopWordFiles = stopWordFiles;
+		
 		tokens = new HashMap<>();
 		String[] input = record.toString().split(",");
 		int n = input.length;
@@ -108,10 +111,9 @@ public class Posting {
 	 */
 	public static Set<String> generateStopWords(){
 		Set<String> stopWordsSet = new HashSet<>();
-		String fileNames[] = {"C:\\Users\\RaghuNandan\\Documents\\Workspace\\Hadoop\\Samples\\stop-words\\stop-words_english_6_en.txt","C:\\Users\\RaghuNandan\\Documents\\Workspace\\Hadoop\\Samples\\stop-words\\stop-words_english_5_en.txt","C:\\Users\\RaghuNandan\\Documents\\Workspace\\Hadoop\\Samples\\stop-words\\stop-words_english_4_google_en.txt","C:\\Users\\RaghuNandan\\Documents\\Workspace\\Hadoop\\Samples\\stop-words\\stop-words_english_3_en.txt","C:\\Users\\RaghuNandan\\Documents\\Workspace\\Hadoop\\Samples\\stop-words\\stop-words_english_2_en.txt","C:\\Users\\RaghuNandan\\Documents\\Workspace\\Hadoop\\Samples\\stop-words\\stop-words_english_1_en.txt"};
 		try {
-			for(String file:fileNames){
-				BufferedReader br = new BufferedReader(new FileReader(file));
+			for (URI uri : stopWordFiles) {
+				BufferedReader br = new BufferedReader(new FileReader(uri.toString()));
 				String str;
 				//Extract each line from the file
 				while((str = br.readLine())!=null){
