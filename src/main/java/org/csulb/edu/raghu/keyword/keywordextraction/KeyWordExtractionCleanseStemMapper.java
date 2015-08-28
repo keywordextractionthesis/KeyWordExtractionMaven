@@ -13,6 +13,7 @@ public class KeyWordExtractionCleanseStemMapper extends
 		Mapper<LongWritable, Text, Text, Text> {
 
 	Posting posting;
+	URI[] cacheFiles;
 	@Override
 	protected void cleanup(Context context) throws IOException,
 			InterruptedException {
@@ -22,7 +23,8 @@ public class KeyWordExtractionCleanseStemMapper extends
 	@Override
 	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
-		posting = new Posting(value.toString());
+		context.getCounter(CUSTOMCOUNTERS.TOTAL_POSTINGS).increment(KeyWordExtractionConstants.ONE);
+		posting = new Posting(value.toString(), cacheFiles);
 		printMap(posting.getTokens());
 		
 	}
@@ -30,7 +32,8 @@ public class KeyWordExtractionCleanseStemMapper extends
 	@Override
 	protected void setup(Context context) throws IOException,
 			InterruptedException {
-		
+		super.setup(context);
+		cacheFiles = context.getCacheFiles(); 
 	}
 	
 	public static void printMap(Map mp) {

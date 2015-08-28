@@ -13,6 +13,10 @@ import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
 import org.csulb.edu.raghu.regex.RegexFileInputFormat;
 
 public class KeyWordExtractionDriver extends Configured implements Tool {
+	
+	 enum CUSTOMCOUNTERS{
+		TOTAL_POSTINGS
+	}
 
 	public int run(String[] args) throws Exception {
 
@@ -23,7 +27,14 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 		job.setNumReduceTasks(KeyWordExtractionConstants.ZERO);
 		job.setInputFormatClass(RegexFileInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
-
+		
+		job.addCacheFile(new Path("").toUri());
+		job.addCacheFile(new Path("").toUri());
+		job.addCacheFile(new Path("").toUri());
+		job.addCacheFile(new Path("").toUri());
+		job.addCacheFile(new Path("").toUri());
+		job.addCacheFile(new Path("").toUri());
+		
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
