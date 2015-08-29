@@ -28,12 +28,12 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 		job.setInputFormatClass(RegexFileInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		
-		job.addCacheFile(new Path("").toUri());
-		job.addCacheFile(new Path("").toUri());
-		job.addCacheFile(new Path("").toUri());
-		job.addCacheFile(new Path("").toUri());
-		job.addCacheFile(new Path("").toUri());
-		job.addCacheFile(new Path("").toUri());
+		job.addCacheFile(new Path("/user/mapper/keywordextract/cache/stop-words_english_1_en.txt").toUri());
+		job.addCacheFile(new Path("/user/mapper/keywordextract/cache/stop-words_english_2_en.txt").toUri());
+		job.addCacheFile(new Path("/user/mapper/keywordextract/cache/stop-words_english_3_en.txt").toUri());
+		job.addCacheFile(new Path("/user/mapper/keywordextract/cache/stop-words_english_4_google_en.txt").toUri());
+		job.addCacheFile(new Path("/user/mapper/keywordextract/cache/stop-words_english_5_en.txt").toUri());
+		job.addCacheFile(new Path("/user/mapper/keywordextract/cache/stop-words_english_6_en.txt").toUri());
 		
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));

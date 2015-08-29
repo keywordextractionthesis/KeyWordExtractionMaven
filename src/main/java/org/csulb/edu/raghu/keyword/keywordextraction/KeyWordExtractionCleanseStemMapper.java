@@ -3,10 +3,12 @@ package org.csulb.edu.raghu.keyword.keywordextraction;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-
+import java.net.URI;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.csulb.edu.raghu.keyword.keywordextraction.KeyWordExtractionDriver.CUSTOMCOUNTERS;
+import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
 import org.csulb.edu.raghu.keyword.util.Posting;
 
 public class KeyWordExtractionCleanseStemMapper extends
