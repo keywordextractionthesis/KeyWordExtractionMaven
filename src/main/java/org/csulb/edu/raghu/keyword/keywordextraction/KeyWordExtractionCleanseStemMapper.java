@@ -3,7 +3,9 @@ package org.csulb.edu.raghu.keyword.keywordextraction;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import java.net.URI;
+
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -15,7 +17,7 @@ public class KeyWordExtractionCleanseStemMapper extends
 		Mapper<LongWritable, Text, Text, Text> {
 
 	Posting posting;
-	URI[] cacheFiles;
+	Path[] cacheFiles;
 	@Override
 	protected void cleanup(Context context) throws IOException,
 			InterruptedException {
@@ -26,7 +28,8 @@ public class KeyWordExtractionCleanseStemMapper extends
 	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 		context.getCounter(CUSTOMCOUNTERS.TOTAL_POSTINGS).increment(KeyWordExtractionConstants.ONE);
-		posting = new Posting(value.toString(), cacheFiles);
+		posting.clear();
+		posting.processPosting(value.toString());
 		printMap(posting.getTokens());
 		
 	}
@@ -34,8 +37,9 @@ public class KeyWordExtractionCleanseStemMapper extends
 	@Override
 	protected void setup(Context context) throws IOException,
 			InterruptedException {
-		super.setup(context);
-		cacheFiles = context.getCacheFiles(); 
+		cacheFiles =  DistributedCache.getLocalCacheFiles(context
+                .getConfiguration()); 
+		posting = new Posting(cacheFiles);
 	}
 	
 	public static void printMap(Map mp) {

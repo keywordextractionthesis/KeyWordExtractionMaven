@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.hadoop.fs.Path;
+
 
 //Java class for identifying a posting
 public class Posting {
@@ -17,15 +19,19 @@ public class Posting {
 	private String body;
 	private List<String> tags;
 	private String codeSection;
-	private Map<String,Integer> tokens;
+	private Map<String,Double> tokens;
 	
-	private static Set<String> stopWords = generateStopWords();
-	private static URI[] stopWordFiles;
+	private Set<String> stopWords;
+	private Path[] stopWordFiles;
 	
 	//Parameterized Constructor
-	public Posting(String record, URI[] stopWordFiles){
+	public Posting(Path[] stopWordFiles){
 		this.stopWordFiles = stopWordFiles;
-		
+		this.stopWords = generateStopWords();		
+	}
+	
+	public void processPosting(String record){
+
 		tokens = new HashMap<>();
 		String[] input = record.toString().split(",");
 		int n = input.length;
@@ -64,7 +70,6 @@ public class Posting {
 		for(String tag:tags){
 			this.tags.add(tag);
 		}
-		
 	}
 	
 	
@@ -75,7 +80,7 @@ public class Posting {
 		//Add the cleaned body to posting
 		String[] splitTokens = str.split(" ");
 		String currentToken;
-		int count;
+		double count;
 		for(int i=0;i<splitTokens.length;i++){
 			currentToken = splitTokens[i];
 			if(!stopWords.contains(currentToken)){
@@ -83,11 +88,21 @@ public class Posting {
 					count = tokens.get(currentToken);
 					tokens.put(currentToken, count+1);
 				}else{
-					tokens.put(currentToken,1);
+					tokens.put(currentToken, 1.0);
 				}
 			}
 		}
+		computeLogWeightedFrequency();
 	}
+	
+	public void computeLogWeightedFrequency() {
+		for (String token : tokens.keySet()) {
+			double termFrequency = tokens.get(token);
+			double logWeightedFequency = 1 + Math.log10(termFrequency);
+			tokens.put(token, logWeightedFequency);
+		}
+	}
+	
 	
 	/*
 	 * Method for performing the cleaning 
@@ -109,20 +124,24 @@ public class Posting {
 	/*
 	 * Method that extracts stop words from text files and adds them to the stop words set
 	 */
-	public static Set<String> generateStopWords(){
+	public Set<String> generateStopWords(){
 		Set<String> stopWordsSet = new HashSet<>();
+		BufferedReader br;
 		try {
-			for (URI uri : stopWordFiles) {
-				BufferedReader br = new BufferedReader(new FileReader(uri.toString()));
+			for (Path uri : stopWordFiles) {
+				br = new BufferedReader(new FileReader(uri.toString()));
 				String str;
 				//Extract each line from the file
 				while((str = br.readLine())!=null){
 					stopWordsSet.add(str.toLowerCase());
 				}
+				br.close();
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
+		
 		return stopWordsSet;
 	}
 	
@@ -164,11 +183,20 @@ public class Posting {
 		this.codeSection = codeSection;
 	}
 
-	public Map<String,Integer> getTokens() {
+	public Map<String,Double> getTokens() {
 		return tokens;
 	}
 
-	public void setTokens(Map<String,Integer> tokens) {
+	public void setTokens(Map<String,Double> tokens) {
 		this.tokens = tokens;
 	}	
+	
+	public void clear(){
+		this.setId(0L);
+		this.setTitle(null);
+		this.setBody(null);
+		this.setTags(null);
+		this.setCodeSection(null);
+		this.setTokens(null);
+	}
 }
