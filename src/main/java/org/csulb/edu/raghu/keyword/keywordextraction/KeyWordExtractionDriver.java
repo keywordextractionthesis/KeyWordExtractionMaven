@@ -7,6 +7,8 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.MapWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -32,10 +34,12 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 		
 		job.setJarByClass(KeyWordExtractionCleanseStemMapper.class);
 		job.setMapperClass(KeyWordExtractionCleanseStemMapper.class);
-		job.setNumReduceTasks(KeyWordExtractionConstants.ZERO);
+		job.setReducerClass(KeyWordExtractionCleanseStemReducer.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(MapWritable.class);
 		job.setInputFormatClass(RegexFileInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
-		
+		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
 		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_1_en.txt"), job.getConfiguration());
 		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_2_en.txt"), job.getConfiguration());
 		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_3_en.txt"), job.getConfiguration());

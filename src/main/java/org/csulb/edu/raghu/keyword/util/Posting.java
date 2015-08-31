@@ -1,7 +1,6 @@
 package org.csulb.edu.raghu.keyword.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +41,6 @@ public class Posting {
 			body.append(input[i]);
 		}
 		StringBuffer codeSection = new StringBuffer();
-		String cleanedBody;
 		int startIndex,endIndex,loopCount,counter=0;
         //Code for extracting code section
         while(body.toString().contains("<code>")){
