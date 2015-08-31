@@ -45,8 +45,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-core</artifactId>
-            <version>${hadoop.version}</version>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>${hadoopcommon.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -70,7 +70,7 @@
     </dependency>
     <dependency>
         <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-core</artifactId>
+        <artifactId>hadoop-mapreduce-client-core</artifactId>
     </dependency>
     <dependency>
         <groupId>junit</groupId>

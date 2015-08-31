@@ -4,21 +4,26 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.mapreduce.Cluster;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.csulb.edu.raghu.keyword.keywordextraction.KeyWordExtractionDriver.CUSTOMCOUNTERS;
 
 public class KeyWordExtractionCleanseStemReducer extends Reducer<Text,MapWritable,Text,MapWritable> {
 
 	long postingsCount;
+	MapWritable tagMapWritable;
+	
 	@Override
 	protected void reduce(Text key, Iterable<MapWritable> values, Context context)
 			throws IOException, InterruptedException {
 		long documentFrequency = 0;
-		MapWritable tagMapWritable = new MapWritable();
+		tagMapWritable = new MapWritable();
 		Iterator<MapWritable> iterator = values.iterator();
 		
 		while(iterator.hasNext()){
@@ -42,20 +47,30 @@ public class KeyWordExtractionCleanseStemReducer extends Reducer<Text,MapWritabl
 		
 		double Ndf = Math.log10(postingsCount/documentFrequency);
 		
+
 		Iterator<Entry<Writable, Writable>> tagMapWritableIterator = tagMapWritable.entrySet().iterator();
 		while(tagMapWritableIterator.hasNext()){
 			Entry<Writable, Writable> tagValue = tagMapWritableIterator.next();
 			double tfidf = ((DoubleWritable)tagValue.getValue()).get() * Ndf;
 			tagMapWritable.put(tagValue.getKey(), new DoubleWritable(tfidf));
 		}
-		
+		if(documentFrequency>=2){
+			Iterator<Entry<Writable, Writable>> itr = tagMapWritable.entrySet().iterator();
+			while(itr.hasNext()){
+				Entry<Writable, Writable> tagValue = itr.next();
+				System.out.println("For Key:"+key+" the tags and values are: "+((Text)tagValue.getKey()).toString()+"\t"+((DoubleWritable)tagValue.getValue()).get());
+			}
+		}
 		context.write(key, tagMapWritable);
 	}
 
 	@Override
-	protected void setup(Reducer<Text, MapWritable, Text, MapWritable>.Context context)
+	protected void setup(Context context)
 			throws IOException, InterruptedException {
-		postingsCount = context.getCounter(CUSTOMCOUNTERS.TOTAL_POSTINGS).getValue();		
+			Configuration conf = context.getConfiguration();
+	        Cluster cluster = new Cluster(conf);
+	        Job currentJob = cluster.getJob(context.getJobID());
+	        postingsCount = currentJob.getCounters().findCounter(CUSTOMCOUNTERS.TOTAL_POSTINGS).getValue(); 
 	}
 
 	
