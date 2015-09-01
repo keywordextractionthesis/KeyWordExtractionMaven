@@ -24,6 +24,7 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 		TOTAL_POSTINGS
 	}
 
+	@SuppressWarnings("deprecation")
 	public int run(String[] args) throws Exception {
 
 		Configuration configuration = this.getConf();
