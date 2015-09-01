@@ -25,7 +25,7 @@ public class KeyWordExtractionCleanseStemMapper extends Mapper<LongWritable, Tex
 	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		context.getCounter(CUSTOMCOUNTERS.TOTAL_POSTINGS).increment(KeyWordExtractionConstants.ONE);
 		posting.clear();
-		posting.processPosting(value.toString());
+		posting.processPosting(value.toString(), KeyWordExtractionConstants.TRUE);
 		Iterator<Entry<String, Double>> iterator = posting.getTokens().entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<String,Double> pair = iterator.next();
@@ -40,6 +40,7 @@ public class KeyWordExtractionCleanseStemMapper extends Mapper<LongWritable, Tex
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void setup(Context context) throws IOException, InterruptedException {
 		cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());

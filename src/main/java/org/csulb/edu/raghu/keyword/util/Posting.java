@@ -29,7 +29,7 @@ public class Posting {
 		this.stopWords = generateStopWords();		
 	}
 	
-	public void processPosting(String record){
+	public void processPosting(String record, boolean isTraining){
 
 		tokens = new HashMap<>();
 		String[] input = record.toString().split(",");
@@ -37,8 +37,17 @@ public class Posting {
 		this.id = Long.parseLong(input[0]);
 		this.title = cleanString(input[1]);
 		StringBuffer body = new StringBuffer();
-		for(int i=2;i<n-1;i++){
-			body.append(input[i]);
+		
+		//For training data the last column is of the csv file is tags
+		if(isTraining){
+			for(int i=2;i<n-1;i++){
+				body.append(input[i]);
+			}
+		}else{
+			//Test data doesn't contain the tags column
+			for(int i=2;i<n;i++){
+				body.append(input[i]);
+			}
 		}
 		StringBuffer codeSection = new StringBuffer();
 		int startIndex,endIndex,loopCount,counter=0;
@@ -60,13 +69,19 @@ public class Posting {
 			this.codeSection = codeSection.toString();
 		
 		this.body = cleanString(body.toString());
+		//Tokenization of the question title and body
 		addToTokensMap(this.title);
 		addToTokensMap(this.body);
-		//Add tags to an array list
-		String[] tags = input[n-1].split(" ");
-		this.tags = new ArrayList<>();
-		for(String tag:tags){
-			this.tags.add(tag);
+		//Add tags to an array list if the input data set is training data set
+		if(isTraining){
+			String[] tags = input[n-1].split(" ");
+			this.tags = new ArrayList<>();
+			for(String tag:tags){
+				this.tags.add(tag);
+			}
+		}else{
+			//For test data there will not be any tags
+			this.tags = null;
 		}
 	}
 	
