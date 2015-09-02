@@ -18,13 +18,13 @@ import org.apache.hadoop.util.ToolRunner;
 import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
 import org.csulb.edu.raghu.regex.RegexFileInputFormat;
 
+@SuppressWarnings("deprecation")
 public class KeyWordExtractionDriver extends Configured implements Tool {
 	
 	 enum CUSTOMCOUNTERS{
 		TOTAL_POSTINGS
 	}
 
-	@SuppressWarnings("deprecation")
 	public int run(String[] args) throws Exception {
 
 		Configuration configuration = this.getConf();
@@ -38,6 +38,8 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 		job.setReducerClass(KeyWordExtractionCleanseStemReducer.class);
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(MapWritable.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(MapWritable.class);
 		job.setInputFormatClass(RegexFileInputFormat.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);

@@ -8,11 +8,11 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
+import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
@@ -21,13 +21,13 @@ import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
 import org.csulb.edu.raghu.keyword.util.PostingTagWeight;
 import org.csulb.edu.raghu.regex.RegexFileInputFormat;
 
+@SuppressWarnings("deprecation")
 public class KeyWordExtractionTestDriver extends Configured implements Tool {
 	
 	 enum CUSTOMCOUNTERS{
-		TOTAL_POSTINGS
+		TOTAL_TEST_POSTINGS
 	}
 
-	@SuppressWarnings("deprecation")
 	public int run(String[] args) throws Exception {
 
 		Configuration configuration = this.getConf();
@@ -36,7 +36,7 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 		FileSystem fileSystem = FileSystem.get(configuration);
 		fileSystem.delete(new Path(args[1]), true);
 		MultipleInputs.addInputPath(job, new Path(args[0]), RegexFileInputFormat.class, KeyWordExtractionTestTokenizeQuestionMapper.class);
-		MultipleInputs.addInputPath(job, new Path(args[1]), RegexFileInputFormat.class, KeyWordExtractionTestTokenizeTagMapper.class);
+		MultipleInputs.addInputPath(job, new Path(args[1]), SequenceFileInputFormat.class, KeyWordExtractionTestTokenizeTagMapper.class);
 
 		job.setReducerClass(KeyWordExtractionCompositeTokenReducer.class);
 		job.setMapOutputKeyClass(Text.class);

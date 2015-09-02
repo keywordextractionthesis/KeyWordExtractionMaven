@@ -16,6 +16,7 @@ import org.csulb.edu.raghu.keyword.keywordextraction.KeyWordExtractionDriver.CUS
 import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
 import org.csulb.edu.raghu.keyword.util.Posting;
 
+@SuppressWarnings("deprecation")
 public class KeyWordExtractionCleanseStemMapper extends Mapper<LongWritable, Text, Text, MapWritable> {
 
 	Posting posting;
@@ -40,7 +41,6 @@ public class KeyWordExtractionCleanseStemMapper extends Mapper<LongWritable, Tex
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void setup(Context context) throws IOException, InterruptedException {
 		cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
