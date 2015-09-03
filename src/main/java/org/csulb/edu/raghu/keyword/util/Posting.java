@@ -2,6 +2,7 @@ package org.csulb.edu.raghu.keyword.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.hadoop.fs.Path;
+
+import com.google.common.collect.Lists;
 
 
 //Java class for identifying a posting
@@ -92,10 +95,10 @@ public class Posting {
 	public void addToTokensMap(String str){
 		//Add the cleaned body to posting
 		String[] splitTokens = str.split(" ");
-		String currentToken;
 		double count;
-		for(int i=0;i<splitTokens.length;i++){
-			currentToken = splitTokens[i];
+		Set<String> tokensSet = new HashSet<>(Arrays.asList(splitTokens));
+		Set<String> stemmedTokens = CustomStemmer.stemTokens(tokensSet);
+		for(String currentToken : stemmedTokens){
 			if(!stopWords.contains(currentToken)){
 				if(tokens.containsKey(currentToken)){
 					count = tokens.get(currentToken);
