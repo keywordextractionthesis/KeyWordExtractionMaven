@@ -11,4 +11,5 @@ public class KeyWordExtractionConstants {
 	public final static int ONE = 1;
 	public final static int FIVE = 5;
 	public final static LongWritable NEGONE = new LongWritable(-1);
+	public static final String COMMA = ",";
 }
