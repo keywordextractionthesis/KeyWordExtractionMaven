@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
@@ -16,7 +18,7 @@ import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
 import org.csulb.edu.raghu.keyword.util.Utility;
 
 public class KeyWordExtractionQuestionCollectionReducer extends Reducer<LongWritable, MapWritable, LongWritable, Text> {
-
+	private static final Log LOG = LogFactory.getLog(KeyWordExtractionQuestionCollectionReducer.class);
 	@Override
 	protected void reduce(LongWritable key, Iterable<MapWritable> values, Context context)
 			throws IOException, InterruptedException {
@@ -38,8 +40,10 @@ public class KeyWordExtractionQuestionCollectionReducer extends Reducer<LongWrit
 				}
 				tagMapIterator.remove();
 			}
+			LOG.info(key+" .. "+tagsMap);
+			System.out.println(key+" .. "+tagsMap);
 		}
-		
+		System.out.println("Final tags.. "+ tagsMap);
 		String[] topTags = Utility.fetchTopKTags(tagsMap, KeyWordExtractionConstants.FIVE);
 		StringBuilder sbr =  new StringBuilder();
 		for(String tag: topTags){

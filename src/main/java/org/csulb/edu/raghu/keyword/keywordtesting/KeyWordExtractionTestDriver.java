@@ -33,6 +33,9 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 	public int run(String[] args) throws Exception {
 
 		Configuration configuration = this.getConf();
+		
+		
+		
 		Job job = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
 
 		FileSystem fileSystem = FileSystem.get(configuration);
@@ -50,17 +53,17 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 		job.setOutputValueClass(MapWritable.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_1_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_1_en.txt"),
 				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_2_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_2_en.txt"),
 				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_3_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_3_en.txt"),
 				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_4_google_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_4_google_en.txt"),
 				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_5_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/cache/stop-words_english_5_en.txt"),
 				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_6_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_6_en.txt"),
 				job.getConfiguration());
 
 		FileOutputFormat.setOutputPath(job, new Path(args[2]));
