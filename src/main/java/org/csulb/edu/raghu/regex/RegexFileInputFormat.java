@@ -12,6 +12,13 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 
 public class RegexFileInputFormat extends FileInputFormat<LongWritable, Text> {
 
+
+	
+	/*@Override
+	protected boolean isSplitable(JobContext context, Path filename) {
+		return KeyWordExtractionConstants.FALSE;
+	}*/
+	
 	public static String REGEX_RECORD_SEPARATOR = "regex.record.separator";
 	@Override
 	public RecordReader<LongWritable, Text> createRecordReader(InputSplit split,

@@ -21,15 +21,19 @@ public class KeyWordExtractionCleanseStemMapper extends Mapper<LongWritable, Tex
 
 	Posting posting;
 	Path[] cacheFiles;
+	int count = 0;
 
 	@Override
 	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		context.getCounter(CUSTOMCOUNTERS.TOTAL_POSTINGS).increment(KeyWordExtractionConstants.ONE);
 		posting.clear();
+		System.out.println(value.toString());
 		posting.processPosting(value.toString(), KeyWordExtractionConstants.TRUE);
+
 		Iterator<Entry<String, Double>> iterator = posting.getTokens().entrySet().iterator();
+
 		while (iterator.hasNext()) {
-			Map.Entry<String,Double> pair = iterator.next();
+			Map.Entry<String, Double> pair = iterator.next();
 			MapWritable tagMapWritable = new MapWritable();
 
 			for (String tag : posting.getTags()) {

@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.csulb.edu.raghu.keyword.keywordtesting.KeyWordExtractionTestDriver.CUSTOMCOUNTERS;
@@ -30,7 +31,7 @@ public class KeyWordExtractionTestTokenizeQuestionMapper extends Mapper<LongWrit
 		LongWritable postingId = new LongWritable(posting.getId());
 		Iterator<Entry<String, Double>> iterator = posting.getTokens().entrySet().iterator();
 		while(iterator.hasNext()){
-			context.write(new Text(iterator.next().getKey()), new PostingTagWeight(postingId, null));
+			context.write(new Text(iterator.next().getKey()), new PostingTagWeight(postingId, new MapWritable()));
 		}
 
 	}

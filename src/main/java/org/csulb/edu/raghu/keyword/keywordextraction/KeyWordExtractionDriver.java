@@ -20,8 +20,8 @@ import org.csulb.edu.raghu.regex.RegexFileInputFormat;
 
 @SuppressWarnings("deprecation")
 public class KeyWordExtractionDriver extends Configured implements Tool {
-	
-	 enum CUSTOMCOUNTERS{
+
+	enum CUSTOMCOUNTERS {
 		TOTAL_POSTINGS
 	}
 
@@ -29,10 +29,10 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 
 		Configuration configuration = this.getConf();
 		Job job = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
-		
+
 		FileSystem fileSystem = FileSystem.get(configuration);
 		fileSystem.delete(new Path(args[1]), true);
-		
+
 		job.setJarByClass(KeyWordExtractionCleanseStemMapper.class);
 		job.setMapperClass(KeyWordExtractionCleanseStemMapper.class);
 		job.setReducerClass(KeyWordExtractionCleanseStemReducer.class);
@@ -43,16 +43,21 @@ public class KeyWordExtractionDriver extends Configured implements Tool {
 		job.setInputFormatClass(RegexFileInputFormat.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_1_en.txt"), job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_2_en.txt"), job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_3_en.txt"), job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_4_google_en.txt"), job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_5_en.txt"), job.getConfiguration());
-		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_6_en.txt"), job.getConfiguration());
-		
+		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_1_en.txt"),
+				job.getConfiguration());
+		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_2_en.txt"),
+				job.getConfiguration());
+		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_3_en.txt"),
+				job.getConfiguration());
+		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_4_google_en.txt"),
+				job.getConfiguration());
+		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_5_en.txt"),
+				job.getConfiguration());
+		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_6_en.txt"),
+				job.getConfiguration());
+
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		
 
 		return job.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
 				: KeyWordExtractionConstants.ONE;

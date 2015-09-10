@@ -78,22 +78,22 @@ public class CustomRegexRecordReader extends RecordReader<LongWritable, Text> {
 					sbr = new StringBuilder();
 					sbr.append(line.trim());
 				} else {
+					if(sbr != null){
 					sbr.append(line.trim());
+					}
 				}
 
 				if (recReader.getProgress() >= 1.0F) {
-					loopFlag = false;
 					key = new LongWritable();
 					value = new Text(sbr.toString());
-					return true;
+					return false;
 				}
-				line = nextValue();
-			} else {
-				line = nextValue();
-			}
+				
+			} 
+			line = nextValue();
 
 		}
-		return loopFlag;
+		return false;
 
 	}
 

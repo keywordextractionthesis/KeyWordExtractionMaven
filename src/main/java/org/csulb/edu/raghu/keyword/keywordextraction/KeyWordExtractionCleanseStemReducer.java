@@ -58,7 +58,6 @@ public class KeyWordExtractionCleanseStemReducer extends Reducer<Text,MapWritabl
 			Iterator<Entry<Writable, Writable>> itr = tagMapWritable.entrySet().iterator();
 			while(itr.hasNext()){
 				Entry<Writable, Writable> tagValue = itr.next();
-				System.out.println("For Key:"+key+" the tags and values are: "+((Text)tagValue.getKey()).toString()+"\t"+((DoubleWritable)tagValue.getValue()).get());
 			}
 		}
 		context.write(key, tagMapWritable);

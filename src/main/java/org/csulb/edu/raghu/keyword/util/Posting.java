@@ -11,8 +11,6 @@ import java.util.Set;
 
 import org.apache.hadoop.fs.Path;
 
-import com.google.common.collect.Lists;
-
 
 //Java class for identifying a posting
 public class Posting {
@@ -33,11 +31,11 @@ public class Posting {
 	}
 	
 	public void processPosting(String record, boolean isTraining){
-
+		try{
 		tokens = new HashMap<>();
 		String[] input = record.toString().split(",");
 		int n = input.length;
-		this.id = Long.parseLong(input[0]);
+		this.id = Long.parseLong(input[0].replaceAll("\"", ""));
 		this.title = cleanString(input[1]);
 		StringBuffer body = new StringBuffer();
 		
@@ -54,18 +52,20 @@ public class Posting {
 		}
 		StringBuffer codeSection = new StringBuffer();
 		int startIndex,endIndex,loopCount,counter=0;
-        //Code for extracting code section
-        while(body.toString().contains("<code>")){
-                startIndex = body.indexOf("<code>");
-                endIndex = body.indexOf("</code>");
-                loopCount=endIndex+6-startIndex;
-                counter=0;
-                while(counter<=loopCount){
-                        codeSection.append(body.charAt(startIndex));
-                        body.deleteCharAt(startIndex);
-                        counter++;
-                }	
-        }
+		 while(body.toString().contains("<code>")){
+	            startIndex = body.indexOf("<code>");
+	            endIndex = body.indexOf("</code>");
+	            if (startIndex == -1 || endIndex == -1 || startIndex > endIndex){
+	            	break;
+	            }
+	            String codeSubString = body.substring(startIndex+6, endIndex);           
+	            while (codeSubString.contains("<code>")) {
+	            	startIndex = startIndex + codeSubString.indexOf("<code>") + 6;
+	            	codeSubString = body.substring(startIndex+6, endIndex);
+	            }
+	            codeSection.append(body.substring(startIndex, endIndex+7));
+	            body = body.replace(startIndex, endIndex+7, "");
+	        }
 		if(codeSection.length()==0)
 			this.codeSection = null;
 		else
@@ -86,7 +86,11 @@ public class Posting {
 			//For test data there will not be any tags
 			this.tags = null;
 		}
-	}
+		}catch(Exception e){
+			System.out.println("EXECEPTION");
+			e.printStackTrace();
+		}
+		}
 	
 	
 	/*
