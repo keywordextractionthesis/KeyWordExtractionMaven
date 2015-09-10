@@ -21,7 +21,7 @@ public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, Postin
 		MapWritable tagsMap = new MapWritable();
 		while(iterator.hasNext()){
 			PostingTagWeight ptw = iterator.next();
-			if(ptw.getPostingId().compareTo(KeyWordExtractionConstants.NEGONE)==0){
+			if(ptw.getPostingId().get() == KeyWordExtractionConstants.NEGONE){
 				tagsMap = ptw.getTagMap();
 			}
 			else{

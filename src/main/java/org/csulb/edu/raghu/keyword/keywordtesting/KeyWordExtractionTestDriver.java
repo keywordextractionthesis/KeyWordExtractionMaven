@@ -46,6 +46,8 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 		job.setReducerClass(KeyWordExtractionCompositeTokenReducer.class);
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(PostingTagWeight.class);
+		job.setOutputKeyClass(LongWritable.class);
+		job.setOutputValueClass(MapWritable.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
 		DistributedCache.addCacheFile(new URI("/user/mapper/keywordextract/cache/stop-words_english_1_en.txt"),
@@ -63,13 +65,13 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 
 		FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
-		System.exit(job.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
-				: KeyWordExtractionConstants.ONE);
+		job.waitForCompletion(KeyWordExtractionConstants.TRUE);
 
 		/********************** SECOND JOB *********************/
 
 		Job secondJob = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
 		fileSystem.delete(new Path(args[3]), true);
+		secondJob.setJarByClass(KeyWordExtractionQuestionCollectMapper.class);
 		secondJob.setMapperClass(KeyWordExtractionQuestionCollectMapper.class);
 		secondJob.setReducerClass(KeyWordExtractionQuestionCollectionReducer.class);
 		secondJob.setMapOutputKeyClass(LongWritable.class);

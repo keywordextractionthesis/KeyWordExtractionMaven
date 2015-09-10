@@ -1,7 +1,5 @@
 package org.csulb.edu.raghu.keyword.util;
 
-import org.apache.hadoop.io.LongWritable;
-
 public class KeyWordExtractionConstants {
 
 	public final static String JOBNAME = "KeyWordExtraction";
@@ -10,6 +8,6 @@ public class KeyWordExtractionConstants {
 	public final static int ZERO = 0;
 	public final static int ONE = 1;
 	public final static int FIVE = 5;
-	public final static LongWritable NEGONE = new LongWritable(-1);
+	public final static long NEGONE = -1;
 	public static final String COMMA = ",";
 }

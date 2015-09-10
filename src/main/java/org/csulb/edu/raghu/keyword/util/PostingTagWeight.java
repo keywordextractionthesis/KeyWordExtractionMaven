@@ -8,11 +8,15 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.WritableComparable;
 
-@SuppressWarnings("rawtypes")
 public class PostingTagWeight implements WritableComparable {
+	
+	private LongWritable postingId;
+	private MapWritable tagMap;
 
-	private LongWritable postingId = new LongWritable(-1);
-	private MapWritable tagMap=null;
+	public PostingTagWeight() {
+		postingId = new LongWritable(KeyWordExtractionConstants.NEGONE);
+		tagMap=new MapWritable();
+	}
 	
 	public PostingTagWeight(LongWritable postingId, MapWritable tagMap){
 		this.postingId=postingId;
