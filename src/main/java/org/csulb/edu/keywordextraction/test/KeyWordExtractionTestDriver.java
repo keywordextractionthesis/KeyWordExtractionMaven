@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keyword.keywordtesting;
+package org.csulb.edu.keywordextraction.test;
 
 import java.net.URI;
 
@@ -19,9 +19,9 @@ import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
-import org.csulb.edu.raghu.keyword.util.PostingTagWeight;
-import org.csulb.edu.raghu.regex.RegexFileInputFormat;
+import org.csulb.edu.keywordextraction.regex.RegexFileInputFormat;
+import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
+import org.csulb.edu.keywordextraction.util.PostingTagWeight;
 
 @SuppressWarnings("deprecation")
 public class KeyWordExtractionTestDriver extends Configured implements Tool {
@@ -61,7 +61,7 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 				job.getConfiguration());
 		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_4_google_en.txt"),
 				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI(args[4]+"/cache/stop-words_english_5_en.txt"),
+		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_5_en.txt"),
 				job.getConfiguration());
 		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_6_en.txt"),
 				job.getConfiguration());

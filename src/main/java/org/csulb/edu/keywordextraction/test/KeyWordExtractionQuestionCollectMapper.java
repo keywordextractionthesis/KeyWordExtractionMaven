@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keyword.keywordtesting;
+package org.csulb.edu.keywordextraction.test;
 
 import java.io.IOException;
 

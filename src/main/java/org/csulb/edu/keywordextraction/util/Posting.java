@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keyword.util;
+package org.csulb.edu.keywordextraction.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class Posting {
 			}
 		}
 		StringBuffer codeSection = new StringBuffer();
-		int startIndex,endIndex,loopCount,counter=0;
+		int startIndex,endIndex;
 		 while(body.toString().contains("<code>")){
 	            startIndex = body.indexOf("<code>");
 	            endIndex = body.indexOf("</code>");
@@ -77,7 +77,7 @@ public class Posting {
 		addToTokensMap(this.body);
 		//Add tags to an array list if the input data set is training data set
 		if(isTraining){
-			String[] tags = input[n-1].split(" ");
+			String[] tags = input[n-1].substring(1, input[n-1].length()-1).split(" ");
 			this.tags = new ArrayList<>();
 			for(String tag:tags){
 				this.tags.add(tag);
@@ -101,8 +101,8 @@ public class Posting {
 		String[] splitTokens = str.split(" ");
 		double count;
 		Set<String> tokensSet = new HashSet<>(Arrays.asList(splitTokens));
-		Set<String> stemmedTokens = CustomStemmer.stemTokens(tokensSet);
-		for(String currentToken : stemmedTokens){
+		//Set<String> stemmedTokens = CustomStemmer.stemTokens(tokensSet);
+		for(String currentToken : tokensSet){
 			if(!stopWords.contains(currentToken)){
 				if(tokens.containsKey(currentToken)){
 					count = tokens.get(currentToken);
@@ -134,7 +134,9 @@ public class Posting {
 		//Remove all html tags 
 		cleanedStr = cleanedStr.replaceAll("\\<.*?>","");
 		//Remove special characters from body
-		cleanedStr = cleanedStr.replaceAll("[\\-\\\"\\+\\^:,()?*]"," ");
+		cleanedStr = cleanedStr.replaceAll("[^\\w |[_]]","");
+		//Remove all digits
+		cleanedStr = cleanedStr.replaceAll("\\d","");
 		cleanedStr = cleanedStr.replaceAll("[\\.']","");
 		//Trim additional white spaces
 		cleanedStr = cleanedStr.trim();

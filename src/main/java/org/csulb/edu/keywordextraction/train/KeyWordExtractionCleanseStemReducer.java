@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keyword.keywordextraction;
+package org.csulb.edu.keywordextraction.train;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -12,7 +12,7 @@ import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Cluster;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.csulb.edu.raghu.keyword.keywordextraction.KeyWordExtractionDriver.CUSTOMCOUNTERS;
+import org.csulb.edu.keywordextraction.train.KeyWordExtractionDriver.CUSTOMCOUNTERS;
 
 public class KeyWordExtractionCleanseStemReducer extends Reducer<Text,MapWritable,Text,MapWritable> {
 
@@ -61,6 +61,13 @@ public class KeyWordExtractionCleanseStemReducer extends Reducer<Text,MapWritabl
 			}
 		}
 		context.write(key, tagMapWritable);
+		/*StringBuilder sbr = new StringBuilder();
+		for(Writable tag : tagMapWritable.keySet()){
+			sbr.append(tag);
+			sbr.append(",");
+		}
+		String ftag = sbr.toString();
+		context.write(key, new Text(ftag));*/
 	}
 
 	@Override

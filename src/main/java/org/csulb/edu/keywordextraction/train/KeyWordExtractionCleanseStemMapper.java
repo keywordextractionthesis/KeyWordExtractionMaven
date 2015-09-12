@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keyword.keywordextraction;
+package org.csulb.edu.keywordextraction.train;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -12,9 +12,9 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.csulb.edu.raghu.keyword.keywordextraction.KeyWordExtractionDriver.CUSTOMCOUNTERS;
-import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
-import org.csulb.edu.raghu.keyword.util.Posting;
+import org.csulb.edu.keywordextraction.train.KeyWordExtractionDriver.CUSTOMCOUNTERS;
+import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
+import org.csulb.edu.keywordextraction.util.Posting;
 
 @SuppressWarnings("deprecation")
 public class KeyWordExtractionCleanseStemMapper extends Mapper<LongWritable, Text, Text, MapWritable> {

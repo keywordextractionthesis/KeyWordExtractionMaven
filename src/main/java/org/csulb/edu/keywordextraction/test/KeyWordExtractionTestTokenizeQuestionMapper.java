@@ -1,4 +1,4 @@
-package org.csulb.edu.raghu.keyword.keywordtesting;
+package org.csulb.edu.keywordextraction.test;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -10,10 +10,10 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.csulb.edu.raghu.keyword.keywordtesting.KeyWordExtractionTestDriver.CUSTOMCOUNTERS;
-import org.csulb.edu.raghu.keyword.util.KeyWordExtractionConstants;
-import org.csulb.edu.raghu.keyword.util.Posting;
-import org.csulb.edu.raghu.keyword.util.PostingTagWeight;
+import org.csulb.edu.keywordextraction.test.KeyWordExtractionTestDriver.CUSTOMCOUNTERS;
+import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
+import org.csulb.edu.keywordextraction.util.Posting;
+import org.csulb.edu.keywordextraction.util.PostingTagWeight;
 
 @SuppressWarnings("deprecation")
 public class KeyWordExtractionTestTokenizeQuestionMapper extends Mapper<LongWritable,Text,Text,PostingTagWeight> {
