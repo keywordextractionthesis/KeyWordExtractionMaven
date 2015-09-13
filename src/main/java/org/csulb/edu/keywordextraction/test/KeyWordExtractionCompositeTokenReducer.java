@@ -3,7 +3,9 @@ package org.csulb.edu.keywordextraction.test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -12,7 +14,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
 import org.csulb.edu.keywordextraction.util.PostingTagWeight;
 
-public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, PostingTagWeight, LongWritable, MapWritable> {
+public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, PostingTagWeight, LongWritable, Text> {
 
 	@Override
 	protected void reduce(Text key, Iterable<PostingTagWeight> values, Context context)
@@ -29,9 +31,16 @@ public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, Postin
 				postingIds.add(ptw.getPostingId().get());
 			}
 		}
-		
+		Iterator<Entry<Writable, Writable>> itr = tagsMap.entrySet().iterator();
+		StringBuilder sbr =  new StringBuilder();
+		while(itr.hasNext()){
+			Entry<Writable, Writable> tagValue = itr.next();
+			sbr.append(((Text)tagValue.getKey()).toString());
+			sbr.append(":");
+			sbr.append(((DoubleWritable)tagValue.getValue()).get());
+		}
 		for(Long postId:postingIds){
-			context.write(new LongWritable(postId), tagsMap);
+			context.write(new LongWritable(postId), new Text(sbr.toString()));
 		}
 
 	}

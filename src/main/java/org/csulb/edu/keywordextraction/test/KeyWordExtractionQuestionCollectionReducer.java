@@ -18,7 +18,6 @@ import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
 import org.csulb.edu.keywordextraction.util.Utility;
 
 public class KeyWordExtractionQuestionCollectionReducer extends Reducer<LongWritable, MapWritable, LongWritable, Text> {
-	private static final Log LOG = LogFactory.getLog(KeyWordExtractionQuestionCollectionReducer.class);
 	@Override
 	protected void reduce(LongWritable key, Iterable<MapWritable> values, Context context)
 			throws IOException, InterruptedException {
@@ -40,24 +39,22 @@ public class KeyWordExtractionQuestionCollectionReducer extends Reducer<LongWrit
 				}
 				tagMapIterator.remove();
 			}
-			LOG.info(key+" .. "+tagsMap);
-			System.out.println(key+" .. "+tagsMap);
+			
 		}
-		System.out.println("Final tags.. "+ tagsMap);
-//		String[] topTags = Utility.fetchTopKTags(tagsMap, KeyWordExtractionConstants.FIVE);
-//		StringBuilder sbr =  new StringBuilder();
-//		for(String tag: topTags){
-//			sbr.append(tag);
-//			sbr.append(KeyWordExtractionConstants.COMMA);
-//		}
-//		
-//		String finalTags = sbr.length() > 0 ? sbr.substring(0, sbr.length() - 1): "";
-		StringBuilder sbr = new StringBuilder();
-		for(String tag:tagsMap.keySet()){
+		String[] topTags = Utility.fetchTopKTags(tagsMap, KeyWordExtractionConstants.FIVE);
+		StringBuilder sbr =  new StringBuilder();
+		for(String tag: topTags){
 			sbr.append(tag);
-			sbr.append(",");
+			sbr.append(KeyWordExtractionConstants.COMMA);
 		}
-		String finalTags = sbr.toString();
+		
+		String finalTags = sbr.length() > 0 ? sbr.substring(0, sbr.length() - 1): "";
+//		StringBuilder sbr = new StringBuilder();
+//		for(String tag:tagsMap.keySet()){
+//			sbr.append(tag);
+//			sbr.append(",");
+//		}
+//		String finalTags = sbr.toString();
 		
 		context.write(key, new Text(finalTags));
 		}

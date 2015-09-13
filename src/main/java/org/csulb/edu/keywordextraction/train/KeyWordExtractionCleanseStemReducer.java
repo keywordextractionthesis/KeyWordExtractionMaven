@@ -61,13 +61,15 @@ public class KeyWordExtractionCleanseStemReducer extends Reducer<Text,MapWritabl
 			}
 		}
 		context.write(key, tagMapWritable);
-		/*StringBuilder sbr = new StringBuilder();
-		for(Writable tag : tagMapWritable.keySet()){
-			sbr.append(tag);
-			sbr.append(",");
-		}
-		String ftag = sbr.toString();
-		context.write(key, new Text(ftag));*/
+//		StringBuilder sbr = new StringBuilder();
+//		for(Writable tag : tagMapWritable.keySet()){
+//			sbr.append(tag);
+//			sbr.append(":");
+//			sbr.append((DoubleWritable))tagMapWritable.get(tag).get());
+//			sbr.append(",");
+//		}
+//		String ftag = sbr.toString();
+//		context.write(key, new Text(ftag));
 	}
 
 	@Override

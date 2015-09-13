@@ -50,8 +50,8 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(PostingTagWeight.class);
 		job.setOutputKeyClass(LongWritable.class);
-		job.setOutputValueClass(MapWritable.class);
-		job.setOutputFormatClass(SequenceFileOutputFormat.class);
+		job.setOutputValueClass(Text.class);
+		job.setOutputFormatClass(TextOutputFormat.class);
 		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
 		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_1_en.txt"),
 				job.getConfiguration());
@@ -68,27 +68,28 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 
 		FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
-		job.waitForCompletion(KeyWordExtractionConstants.TRUE);
+		return job.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
+			: KeyWordExtractionConstants.ONE;
 
 		/********************** SECOND JOB *********************/
 
-		Job secondJob = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
-		fileSystem.delete(new Path(args[3]), true);
-		secondJob.setJarByClass(KeyWordExtractionQuestionCollectMapper.class);
-		secondJob.setMapperClass(KeyWordExtractionQuestionCollectMapper.class);
-		secondJob.setReducerClass(KeyWordExtractionQuestionCollectionReducer.class);
-		secondJob.setMapOutputKeyClass(LongWritable.class);
-		secondJob.setMapOutputValueClass(MapWritable.class);
-		secondJob.setOutputKeyClass(LongWritable.class);
-		secondJob.setOutputValueClass(Text.class);
-		secondJob.setInputFormatClass(SequenceFileInputFormat.class);
-		secondJob.setOutputFormatClass(TextOutputFormat.class);
-		secondJob.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
-		FileInputFormat.addInputPath(secondJob, new Path(args[2]));
-		FileOutputFormat.setOutputPath(secondJob, new Path(args[3]));
-
-		return secondJob.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
-				: KeyWordExtractionConstants.ONE;
+//		Job secondJob = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
+//		fileSystem.delete(new Path(args[3]), true);
+//		secondJob.setJarByClass(KeyWordExtractionQuestionCollectMapper.class);
+//		secondJob.setMapperClass(KeyWordExtractionQuestionCollectMapper.class);
+//		secondJob.setReducerClass(KeyWordExtractionQuestionCollectionReducer.class);
+//		secondJob.setMapOutputKeyClass(LongWritable.class);
+//		secondJob.setMapOutputValueClass(MapWritable.class);
+//		secondJob.setOutputKeyClass(LongWritable.class);
+//		secondJob.setOutputValueClass(Text.class);
+//		secondJob.setInputFormatClass(SequenceFileInputFormat.class);
+//		secondJob.setOutputFormatClass(TextOutputFormat.class);
+//		secondJob.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
+//		FileInputFormat.addInputPath(secondJob, new Path(args[2]));
+//		FileOutputFormat.setOutputPath(secondJob, new Path(args[3]));
+//
+//		//return secondJob.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
+//		//		: KeyWordExtractionConstants.ONE;
 
 	}
 
