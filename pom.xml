@@ -7,7 +7,7 @@
 			<url>http://repo.hortonworks.com/content/repositories/releases/</url>
 		</repository>
 	</repositories>
-	<groupId>org.csulb.edu.keywordextraction</groupId>
+	<groupId>org.csulb.edu.keywordextract</groupId>
 	<artifactId>KeyWordExtractionMaven</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
