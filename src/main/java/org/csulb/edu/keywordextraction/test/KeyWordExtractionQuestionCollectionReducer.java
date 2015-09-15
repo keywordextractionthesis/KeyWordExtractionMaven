@@ -45,7 +45,7 @@ public class KeyWordExtractionQuestionCollectionReducer extends Reducer<LongWrit
 		StringBuilder sbr =  new StringBuilder();
 		for(String tag: topTags){
 			sbr.append(tag);
-			sbr.append(KeyWordExtractionConstants.COMMA);
+			sbr.append(KeyWordExtractionConstants.SPACE);
 		}
 		
 		String finalTags = sbr.length() > 0 ? sbr.substring(0, sbr.length() - 1): "";

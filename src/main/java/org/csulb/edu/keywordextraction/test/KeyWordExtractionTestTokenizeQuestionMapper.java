@@ -10,7 +10,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.csulb.edu.keywordextraction.test.KeyWordExtractionTestDriver.CUSTOMCOUNTERS;
+import org.csulb.edu.keywordextraction.test.KeyWordExtractionTestDriverPhase1.CUSTOMCOUNTERS;
 import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
 import org.csulb.edu.keywordextraction.util.Posting;
 import org.csulb.edu.keywordextraction.util.PostingTagWeight;

@@ -24,7 +24,7 @@ import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
 import org.csulb.edu.keywordextraction.util.PostingTagWeight;
 
 @SuppressWarnings("deprecation")
-public class KeyWordExtractionTestDriver extends Configured implements Tool {
+public class KeyWordExtractionTestDriverPhase1 extends Configured implements Tool {
 
 	enum CUSTOMCOUNTERS {
 		TOTAL_TEST_POSTINGS
@@ -33,9 +33,6 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 	public int run(String[] args) throws Exception {
 
 		Configuration configuration = this.getConf();
-		
-		
-		
 		Job job = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
 
 		FileSystem fileSystem = FileSystem.get(configuration);
@@ -50,51 +47,25 @@ public class KeyWordExtractionTestDriver extends Configured implements Tool {
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(PostingTagWeight.class);
 		job.setOutputKeyClass(LongWritable.class);
-		job.setOutputValueClass(Text.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
-		job.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
-		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_1_en.txt"),
-				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_2_en.txt"),
-				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_3_en.txt"),
-				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_4_google_en.txt"),
-				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_5_en.txt"),
-				job.getConfiguration());
-		DistributedCache.addCacheFile(new URI(args[4]+"/stop-words_english_6_en.txt"),
-				job.getConfiguration());
+		job.setOutputValueClass(MapWritable.class);
+		job.setOutputFormatClass(SequenceFileOutputFormat.class);
+		job.setNumReduceTasks(3);
+		DistributedCache.addCacheFile(new URI(args[3] + "/stop-words_english_1_en.txt"), job.getConfiguration());
+		DistributedCache.addCacheFile(new URI(args[3] + "/stop-words_english_2_en.txt"), job.getConfiguration());
+		DistributedCache.addCacheFile(new URI(args[3] + "/stop-words_english_3_en.txt"), job.getConfiguration());
+		DistributedCache.addCacheFile(new URI(args[3] + "/stop-words_english_4_google_en.txt"), job.getConfiguration());
+		DistributedCache.addCacheFile(new URI(args[3] + "/stop-words_english_5_en.txt"), job.getConfiguration());
+		DistributedCache.addCacheFile(new URI(args[3] + "/stop-words_english_6_en.txt"), job.getConfiguration());
 
 		FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
 		return job.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
-			: KeyWordExtractionConstants.ONE;
-
-		/********************** SECOND JOB *********************/
-
-//		Job secondJob = new Job(configuration, KeyWordExtractionConstants.JOBNAME);
-//		fileSystem.delete(new Path(args[3]), true);
-//		secondJob.setJarByClass(KeyWordExtractionQuestionCollectMapper.class);
-//		secondJob.setMapperClass(KeyWordExtractionQuestionCollectMapper.class);
-//		secondJob.setReducerClass(KeyWordExtractionQuestionCollectionReducer.class);
-//		secondJob.setMapOutputKeyClass(LongWritable.class);
-//		secondJob.setMapOutputValueClass(MapWritable.class);
-//		secondJob.setOutputKeyClass(LongWritable.class);
-//		secondJob.setOutputValueClass(Text.class);
-//		secondJob.setInputFormatClass(SequenceFileInputFormat.class);
-//		secondJob.setOutputFormatClass(TextOutputFormat.class);
-//		secondJob.setNumReduceTasks(KeyWordExtractionConstants.FIVE);
-//		FileInputFormat.addInputPath(secondJob, new Path(args[2]));
-//		FileOutputFormat.setOutputPath(secondJob, new Path(args[3]));
-//
-//		//return secondJob.waitForCompletion(KeyWordExtractionConstants.TRUE) ? KeyWordExtractionConstants.ZERO
-//		//		: KeyWordExtractionConstants.ONE;
+				: KeyWordExtractionConstants.ONE;
 
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.exit(ToolRunner.run(new KeyWordExtractionTestDriver(), args));
+		System.exit(ToolRunner.run(new KeyWordExtractionTestDriverPhase1(), args));
 	}
 
 }

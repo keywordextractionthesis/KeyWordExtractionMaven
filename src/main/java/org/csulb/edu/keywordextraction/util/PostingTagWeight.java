@@ -4,18 +4,28 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.WritableComparable;
+import org.csulb.edu.keywordextraction.test.KeyWordExtractionCompositeTokenReducer;
 
 public class PostingTagWeight implements WritableComparable {
 	
+	private static final Log LOG= LogFactory.getLog(PostingTagWeight.class);
 	private LongWritable postingId;
 	private MapWritable tagMap;
 
 	public PostingTagWeight() {
-		postingId = new LongWritable(KeyWordExtractionConstants.NEGONE);
-		tagMap=new MapWritable();
+//		LOG.info("Default Constructor invoked....");
+//		postingId = new LongWritable(KeyWordExtractionConstants.NEGONE);
+//		tagMap=new MapWritable();
+	}
+	
+	public void set(PostingTagWeight ptw){
+		this.postingId = ptw.getPostingId();
+		this.tagMap = ptw.getTagMap();
 	}
 	
 	public PostingTagWeight(LongWritable postingId, MapWritable tagMap){
@@ -41,6 +51,14 @@ public class PostingTagWeight implements WritableComparable {
 	
 	@Override
 	public void readFields(DataInput dataInput) throws IOException {
+		if(postingId == null){
+			System.out.println("Default posting invoked....");
+			postingId = new LongWritable();
+		}
+		if(tagMap == null){
+			System.out.println("Default tagMap invoked....");
+			tagMap= new MapWritable();
+		}
 		postingId.readFields(dataInput);
 		tagMap.readFields(dataInput);
 		

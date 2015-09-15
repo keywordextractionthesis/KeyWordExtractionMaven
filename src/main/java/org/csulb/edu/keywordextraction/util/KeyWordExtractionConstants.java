@@ -15,4 +15,5 @@ public class KeyWordExtractionConstants {
 	public final static int THREE = 3;
 	public final static long NEGONE = -1;
 	public static final String COMMA = ",";
+	public static final String SPACE = " ";
 }

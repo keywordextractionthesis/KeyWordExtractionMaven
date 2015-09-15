@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class Utility {
 	public static String[] fetchTopKTags(Map<String,Double> tokenMap, int k) {
-		System.out.println("Token Map : "+tokenMap);
 		double[] topValue = new double[k];
 		String[] topTags = new String[k];
 		int index;
@@ -28,11 +27,7 @@ public class Utility {
 				}
 			}
 		}
-		System.out.print("Top 5 tags....");
-		for(String s : topTags){
-			System.out.print(s+" ");
-		}
-		System.out.println();
+		
 		return topTags;
 	}
 }
