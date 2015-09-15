@@ -18,9 +18,6 @@ public class PostingTagWeight implements WritableComparable {
 	private MapWritable tagMap;
 
 	public PostingTagWeight() {
-//		LOG.info("Default Constructor invoked....");
-//		postingId = new LongWritable(KeyWordExtractionConstants.NEGONE);
-//		tagMap=new MapWritable();
 	}
 	
 	public void set(PostingTagWeight ptw){
@@ -52,11 +49,9 @@ public class PostingTagWeight implements WritableComparable {
 	@Override
 	public void readFields(DataInput dataInput) throws IOException {
 		if(postingId == null){
-			System.out.println("Default posting invoked....");
 			postingId = new LongWritable();
 		}
 		if(tagMap == null){
-			System.out.println("Default tagMap invoked....");
 			tagMap= new MapWritable();
 		}
 		postingId.readFields(dataInput);
