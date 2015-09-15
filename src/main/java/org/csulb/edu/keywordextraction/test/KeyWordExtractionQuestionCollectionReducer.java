@@ -44,8 +44,10 @@ public class KeyWordExtractionQuestionCollectionReducer extends Reducer<LongWrit
 		String[] topTags = Utility.fetchTopKTags(tagsMap, KeyWordExtractionConstants.FIVE);
 		StringBuilder sbr =  new StringBuilder();
 		for(String tag: topTags){
+			if(tag != null){
 			sbr.append(tag);
 			sbr.append(KeyWordExtractionConstants.SPACE);
+			}
 		}
 		
 		String finalTags = sbr.length() > 0 ? sbr.substring(0, sbr.length() - 1): "";

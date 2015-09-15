@@ -22,7 +22,7 @@ public class KeyWordExtractionTestTokenizeQuestionMapper extends Mapper<LongWrit
 	Path[] cacheFiles;
 
 	@Override
-	protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, PostingTagWeight>.Context context)
+	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 		
 		context.getCounter(CUSTOMCOUNTERS.TOTAL_TEST_POSTINGS).increment(KeyWordExtractionConstants.ONE);
@@ -37,7 +37,7 @@ public class KeyWordExtractionTestTokenizeQuestionMapper extends Mapper<LongWrit
 	}
 
 	@Override
-	protected void setup(Mapper<LongWritable, Text, Text, PostingTagWeight>.Context context)
+	protected void setup(Context context)
 			throws IOException, InterruptedException {
 		cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
 		posting = new Posting(cacheFiles);
