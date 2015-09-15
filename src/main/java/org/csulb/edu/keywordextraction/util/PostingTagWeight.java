@@ -4,16 +4,12 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.WritableComparable;
-import org.csulb.edu.keywordextraction.test.KeyWordExtractionCompositeTokenReducer;
 
-public class PostingTagWeight implements WritableComparable {
+public class PostingTagWeight implements WritableComparable<Object> {
 	
-	private static final Log LOG= LogFactory.getLog(PostingTagWeight.class);
 	private LongWritable postingId;
 	private MapWritable tagMap;
 

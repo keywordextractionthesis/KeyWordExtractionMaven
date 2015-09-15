@@ -11,11 +11,12 @@ import org.csulb.edu.keywordextraction.util.PostingTagWeight;
 public class KeyWordExtractionTestTokenizeTagMapper extends Mapper<Text, MapWritable, Text, PostingTagWeight> {
 
 	LongWritable NEGONE = new LongWritable(-1);
+	PostingTagWeight ptw;
 	@Override
 	protected void map(Text key, MapWritable value,Context context)
 			throws IOException, InterruptedException {
 		
-		PostingTagWeight ptw = new PostingTagWeight(NEGONE, value);
+		ptw = new PostingTagWeight(NEGONE, value);
 		context.write(key, ptw);
 	}
 

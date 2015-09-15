@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.csulb.edu.keywordextraction.util.KeyWordExtractionConstants;
-
+@SuppressWarnings("deprecation")
 public class KeyWordExtractionTestDriverPhase2 extends Configured implements Tool {
 
 	enum CUSTOMCOUNTERS {
@@ -43,7 +43,7 @@ public class KeyWordExtractionTestDriverPhase2 extends Configured implements Too
 		job.setOutputValueClass(Text.class);
 		job.setInputFormatClass(SequenceFileInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
-		job.setNumReduceTasks(3);
+		job.setNumReduceTasks(1);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
