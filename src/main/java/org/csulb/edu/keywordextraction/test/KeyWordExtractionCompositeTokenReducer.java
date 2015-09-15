@@ -17,7 +17,7 @@ public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, Postin
 
 	PostingTagWeight ptw;
 	Iterator<PostingTagWeight> iterator;
-	ArrayList<Long> postingIds;
+	ArrayList<LongWritable> postingIds;
 	MapWritable tagsMap;
 	Iterator<Entry<Writable, Writable>> itr;
 	StringBuilder sbr;
@@ -32,7 +32,7 @@ public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, Postin
 			throws IOException, InterruptedException {
 
 		iterator = values.iterator();
-		postingIds = new ArrayList<Long>();
+		postingIds = new ArrayList<LongWritable>();
 		tagsMap = new MapWritable();
 		itr = tagsMap.entrySet().iterator();
 		sbr = new StringBuilder();
@@ -44,7 +44,7 @@ public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, Postin
 				tagsMap = ptw.getTagMap();
 
 			} else {
-				postingIds.add(ptw.getPostingId().get());
+				postingIds.add(ptw.getPostingId());
 
 			}
 		}
@@ -55,8 +55,8 @@ public class KeyWordExtractionCompositeTokenReducer extends Reducer<Text, Postin
 		// sbr.append(":");
 		// sbr.append(((DoubleWritable) tagValue.getValue()).get());
 		// }
-		for (Long postId : postingIds) {
-			context.write(new LongWritable(postId), tagsMap);
+		for (LongWritable postId : postingIds) {
+			context.write(postId, tagsMap);
 		}
 
 	}
